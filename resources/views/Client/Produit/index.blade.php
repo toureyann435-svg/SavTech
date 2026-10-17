@@ -19,175 +19,64 @@
             <div class="grille" id="grille">
 
                 <!-- Produit 1 -->
-                <div class="produit" data-categorie="portable">
-                    <div class="image-produit">💻<span class="badge neuf">Neuf</span></div>
-                    <div class="infos">
-                        <h3>HP Pavilion 15</h3>
-                        <p class="specs">Core i5 — 8 Go RAM — SSD 512 Go — Windows 11</p>
-                        <div class="prix">285 000 FCFA</div>
-                        <div class="actions-produit">
-                            <a href="#" class="btn-commander">Commander</a>
-                            <button type="button" class="btn-panier" onclick="ajouterPanier(this)">🛒 <span>Ajouter au panier</span></button>
-                        </div>
-                    </div>
-                </div>
+                @if($produits->isNotEmpty())
+                @foreach($produits as $produit)
+<div class="produit" data-categorie="portable">
+    <div class="image-produit">
+        @if($produit->photo_1)
+            <img src="{{ asset('storage/' . $produit->photo_1) }}" class="photo-produit-client" alt="{{ $produit->nom_produit }}">
+        @else
+         @if($produit->categorie == 'Portable')
+            💻
+         @elseif($produit->categorie == 'Bureau')
+            ⌨️
+         @elseif($produit->categorie == 'Imprimante')
+            🖨️
+         @elseif($produit->categorie == 'Accessoire')
+            🎒
+         @endif
+        @endif
+        <span class="badge {{ $produit->etat == 'Neuf' ? 'neuf' : 'occasion' }}">{{ $produit->etat }}</span>
+    </div>
+    <div class="infos">
+        <h3>{{ $produit->nom_produit }}</h3>
+        <p class="specs">{{ $produit->caracteristiques }}</p>
+        <div class="prix">{{ number_format($produit->prix, 0, ',', ' ') }} FCFA</div>
 
-                <!-- Produit 2 -->
-                <div class="produit" data-categorie="portable">
-                    <div class="image-produit">💻<span class="badge occasion">Occasion</span></div>
-                    <div class="infos">
-                        <h3>Lenovo ThinkPad T14</h3>
-                        <p class="specs">Core i5 — 8 Go RAM — SSD 256 Go</p>
-                        <div class="prix">210 000 FCFA</div>
-                        <div class="actions-produit">
-                            <a href="#" class="btn-commander">Commander</a>
-                            <button type="button" class="btn-panier" onclick="ajouterPanier(this)">🛒 <span>Ajouter au panier</span></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Produit 3 -->
-                <div class="produit" data-categorie="portable">
-                    <div class="image-produit">💻<span class="badge occasion">Occasion</span></div>
-                    <div class="infos">
-                        <h3>Dell Latitude 7490</h3>
-                        <p class="specs">Core i7 — 16 Go RAM — SSD 512 Go</p>
-                        <div class="prix">265 000 FCFA</div>
-                        <div class="actions-produit">
-                            <a href="#" class="btn-commander">Commander</a>
-                            <button type="button" class="btn-panier" onclick="ajouterPanier(this)">🛒 <span>Ajouter au panier</span></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Produit 4 -->
-                <div class="produit" data-categorie="portable">
-                    <div class="image-produit">💻<span class="badge occasion">Occasion</span></div>
-                    <div class="infos">
-                        <h3>HP EliteBook 840 G5</h3>
-                        <p class="specs">Core i5 — 8 Go RAM — SSD 256 Go — Écran tactile</p>
-                        <div class="prix">245 000 FCFA</div>
-                        <div class="actions-produit">
-                            <a href="#" class="btn-commander">Commander</a>
-                            <button type="button" class="btn-panier" onclick="ajouterPanier(this)">🛒 <span>Ajouter au panier</span></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Produit 5 -->
-                <div class="produit" data-categorie="bureau">
-                    <div class="image-produit">🖥️<span class="badge occasion">Occasion</span></div>
-                    <div class="infos">
-                        <h3>Unité centrale Core i3</h3>
-                        <p class="specs">4 Go RAM — 500 Go HDD — Idéal bureautique</p>
-                        <div class="prix">150 000 FCFA</div>
-                        <div class="actions-produit">
-                            <a href="#" class="btn-commander">Commander</a>
-                            <button type="button" class="btn-panier" onclick="ajouterPanier(this)">🛒 <span>Ajouter au panier</span></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Produit 6 -->
-                <div class="produit" data-categorie="bureau">
-                    <div class="image-produit">🖥️<span class="badge occasion">Occasion</span></div>
-                    <div class="infos">
-                        <h3>Unité centrale Core i5</h3>
-                        <p class="specs">8 Go RAM — SSD 256 Go — Écran 22&quot; inclus</p>
-                        <div class="prix">295 000 FCFA</div>
-                        <div class="actions-produit">
-                            <a href="#" class="btn-commander">Commander</a>
-                            <button type="button" class="btn-panier" onclick="ajouterPanier(this)">🛒 <span>Ajouter au panier</span></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Produit 7 -->
-                <div class="produit" data-categorie="imprimante">
-                    <div class="image-produit">🖨️<span class="badge neuf">Neuf</span></div>
-                    <div class="infos">
-                        <h3>Canon Pixma</h3>
-                        <p class="specs">Jet d'encre — Couleur — Scan &amp; Copie</p>
-                        <div class="prix">75 000 FCFA</div>
-                        <div class="actions-produit">
-                            <a href="#" class="btn-commander">Commander</a>
-                            <button type="button" class="btn-panier" onclick="ajouterPanier(this)">🛒 <span>Ajouter au panier</span></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Produit 8 -->
-                <div class="produit" data-categorie="imprimante">
-                    <div class="image-produit">🖨️<span class="badge neuf">Neuf</span></div>
-                    <div class="infos">
-                        <h3>HP LaserJet Pro</h3>
-                        <p class="specs">Laser — Noir &amp; Blanc — WiFi</p>
-                        <div class="prix">120 000 FCFA</div>
-                        <div class="actions-produit">
-                            <a href="#" class="btn-commander">Commander</a>
-                            <button type="button" class="btn-panier" onclick="ajouterPanier(this)">🛒 <span>Ajouter au panier</span></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Produit 9 -->
-                <div class="produit" data-categorie="accessoire">
-                    <div class="image-produit">🖱️<span class="badge neuf">Neuf</span></div>
-                    <div class="infos">
-                        <h3>Souris sans fil</h3>
-                        <p class="specs">USB — Pile incluse</p>
-                        <div class="prix">5 000 FCFA</div>
-                        <div class="actions-produit">
-                            <a href="#" class="btn-commander">Commander</a>
-                            <button type="button" class="btn-panier" onclick="ajouterPanier(this)">🛒 <span>Ajouter au panier</span></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Produit 10 -->
-                <div class="produit" data-categorie="accessoire">
-                    <div class="image-produit">🎒<span class="badge neuf">Neuf</span></div>
-                    <div class="infos">
-                        <h3>Sac à dos pour ordinateur</h3>
-                        <p class="specs">Imperméable — Jusqu'à 15.6&quot;</p>
-                        <div class="prix">15 000 FCFA</div>
-                        <div class="actions-produit">
-                            <a href="#" class="btn-commander">Commander</a>
-                            <button type="button" class="btn-panier" onclick="ajouterPanier(this)">🛒 <span>Ajouter au panier</span></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Produit 11 -->
-                <div class="produit" data-categorie="accessoire">
-                    <div class="image-produit">🔌<span class="badge neuf">Neuf</span></div>
-                    <div class="infos">
-                        <h3>Chargeur rapide</h3>
-                        <p class="specs">Compatible téléphones — Plusieurs modèles</p>
-                        <div class="prix">8 000 FCFA</div>
-                        <div class="actions-produit">
-                            <a href="#" class="btn-commander">Commander</a>
-                            <button type="button" class="btn-panier" onclick="ajouterPanier(this)">🛒 <span>Ajouter au panier</span></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Produit 12 -->
-                <div class="produit" data-categorie="accessoire">
-                    <div class="image-produit">⌨️<span class="badge neuf">Neuf</span></div>
-                    <div class="infos">
-                        <h3>Clavier USB</h3>
-                        <p class="specs">AZERTY — Filaire</p>
-                        <div class="prix">7 000 FCFA</div>
-                        <div class="actions-produit">
-                            <a href="#" class="btn-commander">Commander</a>
-                            <button type="button" class="btn-panier" onclick="ajouterPanier(this)">🛒 <span>Ajouter au panier</span></button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+        {{-- ===== INDICATEUR DE STOCK ===== --}}
+        <div class="stock-produit {{ $produit->quantite == 0 ? 'rupture' : ($produit->quantite <= 5 ? 'faible' : 'enstock') }}">
+            @if($produit->quantite == 0)
+                ⛔ Rupture de stock
+            @elseif($produit->quantite <= 5)
+                ⚠️ Plus que {{ $produit->quantite }} {{ $produit->quantite > 1 ? 'exemplaires' : 'exemplaire' }} en stock !
+            @else
+                ✅ En stock ({{ $produit->quantite }} disponibles)
+            @endif
         </div>
+
+        <div class="actions-produit">
+            <a href="{{ auth()->check() ? route('client.commande.produit', $produit->id) : route('login') }}" class="btn-commander {{ $produit->quantite == 0 ? 'desactive' : '' }}">Commander</a>
+            <form method="POST" action="{{ route('client.store.panier', $produit->id) }}">
+             <button type="submit" class="btn-panier" 
+                    @if($produit->quantite == 0) disabled @endif>
+                🛒 <span>{{ $produit->quantite == 0 ? 'Indisponible' : 'Ajouter au panier' }}</span>
+             </button>
+            </form>
+        </div>
+    </div>
+</div>
+                @endforeach
+                @else
+    <div class="vide-catalogue">
+        <span class="vide-icone">🔍</span>
+        <h3>Aucun produit trouvé</h3>
+        <p>Oups ! Aucun produit ne correspond à votre recherche pour le moment.</p>
+        <p class="vide-conseil">
+            Revenez bientôt : de nouveaux ordinateurs et accessoires arrivent régulièrement ! 💻
+        </p>
+        <a href="/produits" class="btn-vide">Voir tout le catalogue</a>
+    </div>
+                @endif
     </section>
 
     <footer>

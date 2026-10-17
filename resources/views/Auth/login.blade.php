@@ -199,7 +199,7 @@
     <div class="topbar">📞 +225 XX XX XX XX XX &nbsp;|&nbsp; ✉️ savtech@gmail.com</div>
 
     <header>
-        <a href="index.html"><div class="logo">Sav<span>Tech</span></div></a>
+        <a href="{{ route('welcome') }}"><div class="logo">Sav<span>Tech</span></div></a>
     </header>
 
     <div class="connexion-zone">
@@ -213,20 +213,24 @@
 
             <h1>Connexion</h1>
             <p class="sous-titre">Votre satisfaction, notre priorité</p>
-
-            <form onsubmit="return connexion(event)">
-
+            @if(session('erreur'))
+             <div class="alert alert-danger">
+                {{ session('erreur') }}
+             </div>
+            @endif
+            <form action="{{ route('login.store') }}" method="POST">
+                @csrf
                 <div class="groupe">
                     <label for="numero">Numéro de téléphone</label>
                     <div class="champ">
-                        <input type="tel" id="numero" placeholder="+225 XX XX XX XX XX" required>
+                        <input type="tel" id="numero" placeholder="+225 XX XX XX XX XX" name="numero_telephone">
                     </div>
                 </div>
 
                 <div class="groupe">
                     <label for="mdp">Mot de passe</label>
                     <div class="champ">
-                        <input type="password" id="mdp" placeholder="Votre mot de passe" required>
+                        <input type="password" id="mdp" placeholder="Votre mot de passe" name="password">
                         <button type="button" class="toggle-mdp" onclick="voirMdp()" title="Afficher / masquer">
                             <svg id="oeil" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
@@ -237,14 +241,14 @@
                 </div>
 
                 <div class="options">
-                    <label><input type="checkbox"> Se souvenir de moi</label>
+                    <label><input type="checkbox" name="remember"> Se souvenir de moi</label>
                     <a href="#">Mot de passe oublié ?</a>
                 </div>
 
                 <button type="submit" class="btn-connexion">Se connecter</button>
             </form>
 
-            <p class="inscription">Pas encore de compte ? <a href="#">Créer un compte</a></p>
+            <p class="inscription">Pas encore de compte ? <a href="{{ route('register') }}">Créer un compte</a></p>
             <a href="{{ route('welcome') }}" class="retour">← Retour à l'accueil</a>
         </div>
     </div>

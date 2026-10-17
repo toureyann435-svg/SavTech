@@ -245,6 +245,90 @@
         .hero h1 { font-size: 2rem; }
         nav { justify-content: center; }
     }
+
+
+
+        /* ====== BOUTON DÉCONNEXION ====== */
+    .form-logout { display: flex; }
+
+    .btn-logout {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: transparent;
+        border: 2px solid var(--rouge);
+        color: var(--rouge);
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-family: inherit;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.3s, color 0.3s;
+    }
+    .btn-logout:hover {
+        background: var(--rouge);
+        color: var(--blanc);
+    }
+
+
+
+
+        /* ====== ICÔNE PANIER ====== */
+    .nav-panier {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        color: var(--gris);
+        transition: background 0.3s, color 0.3s;
+    }
+    .nav-panier:hover {
+        background: var(--gris-clair);
+        color: var(--bleu);
+    }
+    .badge-panier {
+        position: absolute;
+        top: -2px;
+        right: -4px;
+        min-width: 18px;
+        height: 18px;
+        background: var(--rouge);
+        color: var(--blanc);
+        font-size: 0.7rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4px;
+        border-radius: 50px;
+        border: 2px solid var(--blanc);   /* décolle la pastille du fond */
+    }
+
+    /* ====== BOUTON ESPACE CLIENT ====== */
+    .btn-compte {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--gris-clair);
+        color: var(--gris) !important;
+        padding: 9px 18px;
+        border-radius: 50px;
+        font-weight: 600;
+        line-height: 1;
+        border: 2px solid #dde3e8;
+        transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    }
+    .btn-compte:hover {
+        background: var(--bleu);
+        border-color: var(--bleu);
+        color: var(--blanc) !important;
+        transform: translateY(-2px);
+    }
 </style>
 </head>
 <body>
@@ -262,18 +346,47 @@
         <nav>
             <div class="logo">Sav<span>Tech</span></div>
             <div class="nav-links">
-                <a href="#accueil">Accueil</a>
-                <a href="{{ route('client.produit.index') }}">Produits</a>
-                <a href="#services">Services</a>
-                <a href="#apropos">À propos</a>
-                <a href="#contact">Contact</a>
-                <a href="#connexion" class="btn-connexion">
+                <a href="{{ route('welcome') }}" class="{{ request()->routeIs('welcome') ? 'actif' : '' }}">Accueil</a>
+                <a href="{{ auth()->check() ? route('client.produit.index') : route('login') }}">Produits</a>
+                <a href="{{ route('client.service') }}">Services</a>
+                <a href="{{ route('client.propos') }}">À propos</a>
+                <a href="{{ route('client.contact') }}">Contact</a>
+@if(auth()->check())
+                {{-- ===== Icône Panier (avec compteur) ===== --}}
+                <a href="{{ route('client.panier') }}" class="nav-panier" title="Mon panier">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"/>
+                        <circle cx="20" cy="21" r="1"/>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                    </svg>
+                    @if(session('panier') && count(session('panier')) > 0)
+                        <span class="badge-panier">{{ count(session('panier')) }}</span>
+                    @endif
+                </a>
+
+
+    {{-- ===== Connecté : Espace client + Déconnexion ===== --}}
+                <a href="{{ route('client.dashboard') }}" class="btn-compte" title="Mon espace client">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    Mon espace
+                </a>
+                <form method="POST" action="{{ route('logout') }}" class="form-logout">
+                    @csrf
+                    <button type="submit" class="btn-logout">⏻ Deconnexion</button>
+                </form>
+@else
+    {{-- ===== Visiteur : Connexion ===== --}}
+                <a href="{{ route('login') }}" class="btn-connexion">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                         <circle cx="12" cy="7" r="4"/>
                     </svg>
                     Connexion
                 </a>
+@endif
             </div>
         </nav>
     </header>
@@ -282,8 +395,8 @@
     <section class="hero" id="accueil">
         <h1>Bienvenue chez <span>SavTech</span></h1>
         <p>Votre satisfaction, notre priorité. Vente d'ordinateurs portables, PC de bureau, imprimantes, accessoires et service de réparation professionnel.</p>
-        <a href="#produits" class="btn btn-rouge">Découvrir nos produits</a>
-        <a href="#contact" class="btn btn-blanc">Nous contacter</a>
+        <a href="{{ route('client.produit.index') }}" class="btn btn-rouge">Découvrir nos produits</a>
+        <a href="{{ route('client.contact') }}" class="btn btn-blanc">Nous contacter</a>
     </section>
 
     <!-- Produits -->

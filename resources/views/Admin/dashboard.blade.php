@@ -12,7 +12,7 @@
                 <h1>Bonjour, <span>Admin</span> 👋</h1>
                 <p>Voici l'activité de la boutique aujourd'hui</p>
             </div>
-            <a href="#" class="btn-rouge">➕ Ajouter un produit</a>
+            <a href="{{ route('admin.produit.create') }}" class="btn-rouge">➕ Ajouter un produit</a>
         </div>
 
         {{-- Statistiques --}}
@@ -50,10 +50,10 @@
             <div class="panneau">
                 <h2>Actions <span>rapides</span></h2>
                 <div class="actions">
-                    <a href="#" class="action"><span class="emo">➕</span> Ajouter un produit</a>
-                    <a href="#" class="action"><span class="emo">📦</span> Gérer le stock</a>
-                    <a href="#" class="action"><span class="emo">🛒</span> Voir les commandes</a>
-                    <a href="#" class="action"><span class="emo">⚙️</span> Paramètres</a>
+                    <a href="{{ route('admin.produit.create') }}" class="action"><span class="emo">➕</span> Ajouter un produit</a>
+                    <a href="{{ route('admin.stock') }}" class="action"><span class="emo">📦</span> Gérer le stock</a>
+                    <a href="{{ route('admin.commande') }}" class="action"><span class="emo">🛒</span> Voir les commandes</a>
+                    <a href="{{ route('admin.parametre') }}" class="action"><span class="emo">⚙️</span> Paramètres</a>
                 </div>
             </div>
         </div>
@@ -67,24 +67,24 @@
                         <tr>
                             <th>N°</th>
                             <th>Client</th>
-                            <th>Produit</th>
-                            <th>Montant</th>
+                            <th>Nombre de produits</th>
+                            <th>Montant total</th>
                             <th>Statut</th>
                             <th>Date</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if(!isset($commandes))
+                        @if($commandes->isEmpty())
                             <tr><td colspan="6">Aucune commande pour le moment.</td></tr>
                         @else
                             @foreach($commandes as $commande)
                                 <tr>
-                                    <td>{{ $commande['numero'] }}</td>
-                                    <td>{{ $commande['client'] }}</td>
-                                    <td>{{ $commande['produit'] }}</td>
-                                    <td>{{ $commande['montant'] }}</td>
-                                    <td><span class="badge {{ $commande['classe'] }}">{{ $commande['statut'] }}</span></td>
-                                    <td>{{ $commande['date'] }}</td>
+                                    <td>{{ $commande->code }}</td>
+                                    <td>{{ $commande->user->nom }} {{ $commande->user->prenom }}</td>
+                                    <td>{{ count($commande->item_commande) }}</td>
+                                    <td>{{ number_format($commande->montant_total, 0, ',', ' ') }} FCFA</td>
+                                    <td><span class="badge {{ $commande['status'] == "Confirmee" || $commande['status'] == "Livré" ? "livree" : "En attente" }}">{{ $commande->status }}</span></td>
+                                    <td>{{ $commande->created_at->format('d-m-Y') }}</td>
                                 </tr>
                             @endforeach
                         @endif
